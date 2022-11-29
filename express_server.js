@@ -2,6 +2,16 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 
+function generateRandomString() {
+  let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ0123456789';
+  let result = '';
+  let charLength = chars.length;
+  for (let i = 0; i < 6; i++) {
+     result += chars.charAt(Math.floor(Math.random() * charLength));
+  }
+  return result;
+};
+
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,6 +35,12 @@ app.get("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
+});
+
+app.get("/u/:id", (req, res) => {
+  const id = req.params.id
+  const longURL = urlDatabase[id]
+  res.redirect(longURL);
 });
 
 app.get("/urls/:id", (req, res) => {
