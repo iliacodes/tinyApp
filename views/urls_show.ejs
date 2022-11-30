@@ -19,6 +19,20 @@
         <p class="card-text">
           Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
         </p>
+        </div>
+        <form class="form text-center" action="/urls/<%= id %>" method="POST">
+          <div class="form-group mb-2">
+            <label for="longURL">Enter a URL:</label>
+            <input
+              class="form text-center"
+              type="text"
+              name="longURL"
+              placeholder="http://"
+              style="width: 300px; margin: 1em"
+            />
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
       </div>
       <div class="card-footer text-muted"></div>
     </div>

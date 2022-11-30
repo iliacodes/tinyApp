@@ -50,10 +50,28 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-app.post("/urls", (req, res) => {
-  console.log(req.body); // Log the POST request body to the console
-  res.send("Ok"); // Respond with 'Ok' (we will replace this)
-});
+
+app.post("/urls/:id/delete", (req, res) => {
+  const id = req.params.id;
+  delete urlDatabase[id];
+  res.redirect("/urls")
+})
+
+app.post("/urls/:id", (req, res) => {
+  console.log("req.body:", req.body )
+  console.log(req.params.id)
+  const id = req.params.id;
+  urlDatabase[id] = req.body.longURL
+  res.redirect("/urls")
+  // get the new url submitted from the form.
+  // update the urldatabase with short url
+  // render urls index template
+})
+
+// app.post("/urls", (req, res) => {
+//   console.log(req.body); // Log the POST request body to the console
+//   res.send("Ok"); // Respond with 'Ok' (we will replace this)
+// });
 
 
 app.listen(PORT, () => {
