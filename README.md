@@ -5,7 +5,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 ### ***Final Product***
 
 !["Create shortened URL's freely!"](https://github.com/iliacodes/tinyapp/blob/master/docs/tinyURL_creation.png)
-!["Edit, Delete, and View your URL's!"](https://github.com/iliacodes/tinyapp/blob/master/docs/tinyURL_publicView.png)
+!["Edit, Delete, and View your URL's!"](https://github.com/iliacodes/tinyapp/blob/master/docs/tinyURL_userURLpage.png)
 !["Let anyone view and use your created URL's!"](https://github.com/iliacodes/tinyapp/blob/master/docs/tinyURL_publicView.png)
 
 ###  ***Dependencies*** 
