@@ -20,9 +20,9 @@
           Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
         </p>
         </div>
-        <form class="form text-center" action="/urls/<%= id %>" method="POST">
+        <form class="form text-center" action="/urls/<%= user.id %>" method="POST">
           <div class="form-group mb-2">
-            <label for="longURL">Enter a URL:</label>
+            <label for="longURL">Enter a URL to edit:</label>
             <input
               class="form text-center"
               type="text"
