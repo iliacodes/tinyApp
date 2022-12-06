@@ -6,7 +6,7 @@ const { generateRandomString, getUsersByEmail, userURL } = require('./helper.js'
 
 const PORT = 8080; // default port 8080
 
-//MIDDLEWARE
+// MIDDLEWARE
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({
@@ -15,28 +15,26 @@ app.use(cookieSession({
 }));
 
 
-// database for storing user data
+// Database for storing user data.
+// Example of Object structure within users database (user: "testUser").
 const users = {
-  "hikaw": {
-    id: "whateva", 
+  "testUser": {
+    id: "user1", 
     email: "whateva@gmail.com",
     password: "whatevaEva"
   }
 };
 
-// database for storing userURL's
+// Database for storing userURL's.
+// Example of Object Structure within urlDatabase. 
 const urlDatabase = {
-  "b2xVn2": {
-    longURL: "http://www.lighthouselabs.ca",
-    userID: "user1"
-    },
   "9sm5xK": {
     longURL: "http://www.google.com",
-    userID: "user1"
+    userID: "testUser"
   }
 };
 
-// home page just redirects to /urls
+// If user is logged in, '/' redirects to '/urls'. If user is not logged in, '/' redirects to '/login' page.
 app.get("/", (req, res) => {
   const userID = req.session.user_id;
   const user = users[userID];
@@ -48,8 +46,8 @@ app.get("/", (req, res) => {
   }
 });
 
-// page to display list of user URL's
-// if user is not logged in, redirect to html response.
+// Page to display list of current user's URL's.
+// If user is not logged in, redirect to html response.
 app.get("/urls", (req, res) => {
   const userID = req.session.user_id;
   const user = users[userID]
@@ -66,8 +64,8 @@ app.get("/urls", (req, res) => {
   };
 });
 
-// page displays new URL creation page. Only logged in users can create tinyURL
-// checks for logged in user, if none, redirect to login page.
+// Page renders urls_new page. Only logged in users can create tinyURL
+// Checks for logged in user, if none, redirect to login page.
 app.get("/urls/new", (req, res) => {
   let userID = req.session.user_id;
   const user = users[userID];
@@ -82,27 +80,26 @@ app.get("/urls/new", (req, res) => {
   }
 });
 
-// page to redirect short URL to corresponding long URL.
+// Page to redirect short URL to corresponding long URL. Checks to see if short URL exists, throws a relevant error message if it does not.
 app.get("/u/:id", (req, res) => {
-  const id = req.params.id
+  const id = req.params.id;
   if (!urlDatabase[id]) {
-    res.send("This URL does not exist. Create a new one here <a href='/urls/new'>here.</a>")
+    res.send("This URL does not exist. Create a new one here <a href='/urls/new'>here.</a>");
   } else {
-    const longURL = urlDatabase[id].longURL
+    const longURL = urlDatabase[id].longURL;
     res.redirect(longURL);
-  }
+  };
 });
 
-// Page to display specific URL with redirection to specfic URL implemented. Allows for tinyURL editing if it belongs to user.
+// Page to display specific URL with redirection to specfic URL implemented. Allows for tinyURL editing if it belongs to user. If it does not belong to user, throws relevant error message. If it does not exist, throws relevant error message
 app.get("/urls/:id", (req, res) => {
   let userID = req.session.user_id;
   const id = req.params.id;
   const user = users[userID];
   if (!user || !id) {
     return res.send("You need to <a href='/login'>login</a> to edit your urls. If you are logged in, this URL is not yours or does not exist.")
-} 
-const urlsForuser = userURL(userID, urlDatabase) 
-console.log("urlsforuser:", urlsForuser) 
+  } 
+  const urlsForuser = userURL(userID, urlDatabase);
   if (urlsForuser[id]) {
   const longURL = urlDatabase[id].longURL;
   const templateVars = { 
@@ -117,10 +114,10 @@ console.log("urlsforuser:", urlsForuser)
   }
 });
 
-// Page to display registration. Redirects if logged in, if not renders page to allow for user registration.
+// For rendering /register page. Redirects if logged in, if not, continues to render page to allow for user registration.
 app.get("/register", (req, res) => {
   let userID = req.session.user_id;
-  const user = users[userID]
+  const user = users[userID];
   if (user) {
     res.redirect('/urls')
   } else {
@@ -149,22 +146,22 @@ app.post("/urls/new", (req, res) => {
       };
       res.redirect(`/urls`)
   } else {
-    res.send("Invalid url. If you are admin of this tinyURL, please recreate to include https:// or http://.")
-  } 
-})
+    res.send("Invalid url. If you are admin of this tinyURL, please recreate to include https:// or http://.");
+  };
+});
 
 // Button post to allow for deletion of personal URL from the urlDatabase.
 app.post("/urls/:id/delete", (req, res) => {
   let userID = req.session.user_id;
-  const user = users[userID] 
+  const user = users[userID];
   if (!user) {
     res.redirect("/login")
   } else {
     const id = req.params.id;
     delete urlDatabase[id];
   }
-  res.redirect("/urls")
-})
+  res.redirect("/urls");
+});
 
 // Allows for editing of the url. Checks if user owns url. Sends an error if the url doesn't include http or https.
 app.post("/urls/:id", (req, res) => {
@@ -182,17 +179,17 @@ app.post("/urls/:id", (req, res) => {
     res.redirect("/urls");
   } else {
     res.send("Invalid url. If you are admin of this tinyURL, please recreate to include https:// or http://.")
-  } 
-})
+  };
+});
 
 
 //Allows user to logout. Clears encryptoed cookie and redirects to login page.
 app.post("/logout", (req, res) => {
   req.session = null; 
-  res.redirect("/login")
-})
+  res.redirect("/login");
+});
 
-//creation of login page. If the user is already logged in, it redirects to urls page.
+// Renders the urls_login page. If the user is already logged in, it redirects to urls page.
 app.get("/login", (req, res) => {
   let userID = req.session.user_id;
   const user = users[userID];
@@ -200,8 +197,8 @@ app.get("/login", (req, res) => {
     res.redirect('/urls');
   } else {
     res.render("urls_login", {user: null});
-  }
-})
+  };
+});
 
 // Allows user to login if user in in the databse. Redirects logged in user to urls page
 app.post('/login', (req,res) => {
@@ -213,18 +210,18 @@ app.post('/login', (req,res) => {
   } else {
     req.session.user_id = user.id;
     res.redirect('/urls');
-  }
-})
+  };
+});
 
-// allows creation of new user and pushes that user to the userdatabase
-// if user exists, throws an error. if no user or pass was implemented, throw an error
-//redirect new user to personal urls page
+// Allows creation of new user and pushes that user to the userdatabase.
+// If user exists, throws an error. if no user or pass was implemented, throw an error.
+// Redirect newly registered user to personal /urls page.
 app.post("/register", (req, res) => {
   const newUserEmail = req.body.email;
   const newUserPass = req.body.password;
-  const hashPassword = bcrypt.hashSync(newUserPass)
+  const hashPassword = bcrypt.hashSync(newUserPass);
   if (!newUserEmail || !newUserPass) {
-    return res.status(404).send("Please enter registration credentials. Please <a href='/register'> try again.</a>")
+    return res.status(404).send("Please enter registration credentials. Please <a href='/register'> try again.</a>");
   };
   if (getUsersByEmail(users, newUserEmail)) {
     res.status(404).send("User has already been established. Please register with a different email. <a href='/register'>Regsiter</a>");
