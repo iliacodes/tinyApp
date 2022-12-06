@@ -230,7 +230,7 @@ app.post("/register", (req, res) => {
     const newUser = {
       id,
       email: newUserEmail,
-       password: hashPassword
+      password: hashPassword
       };
     users[id] = newUser;
     req.session.user_id = id;
