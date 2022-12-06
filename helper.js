@@ -1,4 +1,4 @@
-// checks to see if the user_id matches within the urlDatabase
+// Checks to see if the user_id matches within the urlDatabase.
 const userURL = function(user_ID, urlDatabase) {
   let results = {}
   const shortURLs = Object.keys(urlDatabase);
@@ -11,7 +11,7 @@ const userURL = function(user_ID, urlDatabase) {
   return results;
 };
 
-// function to generate a randomized 5 char string
+// Generate a randomized 5 char string.
 function generateRandomString() {
   let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ0123456789';
   let result = '';
@@ -22,7 +22,7 @@ function generateRandomString() {
   return result;
 };
 
-// helper function to find user/userID by providing email.
+// Find user/userID by providing an email.
 const getUsersByEmail = function(users, newUserEmail){
   for (let user in users) {
     if (users[user].email === newUserEmail) {
