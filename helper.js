@@ -1,4 +1,4 @@
-// function to push url into the urldatabase specific to the user
+// checks to see if the user_id matches within the urlDatabase
 const userURL = function(user_ID, urlDatabase) {
   let results = {}
   const shortURLs = Object.keys(urlDatabase);
