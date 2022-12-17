@@ -195,10 +195,10 @@ app.post("/urls/:id/delete", (req, res) => {
 // Allows for editing of the url. Checks if user owns url. Sends an error if the url doesn't include http or https.
 app.post("/urls/:id", (req, res) => {
   const userID = req.session.user_id;
-  const user = users[userID];
   const longURL = req.body.longURL;
+  const shortURL = urlDatabase[req.params.id]
 
-  if (user !== urlDatabase[req.params.id]) {
+  if (userID !== shortURL.userID) {
     res.redirect('/login')
   } else if (longURL.startsWith('http://') || longURL.startsWith('https://')) {
     const id = req.params.id;
